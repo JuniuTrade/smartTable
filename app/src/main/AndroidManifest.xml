@@ -44,6 +44,7 @@
         <activity android:name=".GridModeActivity"/>
         <activity android:name=".AvatorModeActivity"/>
         <activity android:name=".DesktopModeActivity"/>
+        <activity android:name=".TestActivity"/>
         <activity
             android:name=".ChoiceExcelActivity"
             android:label="@string/title_activity_choice_excel"

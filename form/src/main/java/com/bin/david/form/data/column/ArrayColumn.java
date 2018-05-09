@@ -1,6 +1,8 @@
 package com.bin.david.form.data.column;
 
 
+import android.util.Log;
+
 import com.bin.david.form.data.ArrayStructure;
 import com.bin.david.form.data.TableInfo;
 import com.bin.david.form.data.format.IFormat;
@@ -29,6 +31,16 @@ public class ArrayColumn<T> extends Column<T> {
      */
     private boolean isThoroughArray = false;
 
+    /**
+     * 获取列表中指定position的值
+     */
+    private int mPosition = -1;
+
+    /**
+     * 获取该数据所在的层级
+     */
+    private int mLevel = -1;
+
     public ArrayColumn(String columnName, String fieldName) {
         this(columnName, fieldName,true,null,null);
     }
@@ -50,6 +62,10 @@ public class ArrayColumn<T> extends Column<T> {
         this.isThoroughArray = isThoroughArray;
     }
 
+    public void setSingleTarget(int position,int level) {
+        this.mPosition = position;
+        this.mLevel = level;
+    }
 
     /**
      * 填充数据
@@ -78,16 +94,14 @@ public class ArrayColumn<T> extends Column<T> {
         }
     }
 
-
-
     /**
      * 添加数据
      * @param objects 对象列表
      * @throws NoSuchFieldException
      * @throws IllegalAccessException
      */
-
-    public void addData(List<Object> objects, int startPosition,boolean isFoot) throws NoSuchFieldException, IllegalAccessException {
+    @Override
+    public void addData(List<Object> objects, int startPosition, boolean isFoot) throws NoSuchFieldException, IllegalAccessException {
         if (objects.size() > 0) {
             String[] fieldNames = getFieldName().split("\\.");
             if (fieldNames.length >0) {
@@ -123,6 +137,7 @@ public class ArrayColumn<T> extends Column<T> {
             Field childField = childClazz.getDeclaredField(fieldNames[i]);
             childField.setAccessible(true);
             child = childField.get(child);
+            //判断是否不为数组或集合
             if(!isList(child)) {
                 if (i == fieldNames.length - 1) {
                     if(child == null){
@@ -134,6 +149,7 @@ public class ArrayColumn<T> extends Column<T> {
                 }
             }else{
                level++;
+               //判断是否为数组
               if(child.getClass().isArray()){
                   T[] data = (T[]) child;
                   arrayType = ARRAY;
@@ -145,19 +161,38 @@ public class ArrayColumn<T> extends Column<T> {
                       }
                   }
                   structure.put(level-1,data.length,isFoot);
-              }else {
+              }
+              //判断是否为集合
+              else {
                   List data = (List) child;
                   arrayType = LIST;
-                  for (Object d : data) {
+                  for (int n=0;n<data.size(); n++) {
+                      Object d = data.get(n);
                       if (i == fieldNames.length - 1) {
                           T t = (T) d;
                           addData(t, true);
                       } else {
-                          getFieldData(fieldNames, i + 1, d,level,true);
+                          //判断是否为最底层的属性且设置为显示列表单个数据
+                          if(mPosition >=0&&i==fieldNames.length-2){
+                              if(mPosition ==n){
+                                  getFieldData(fieldNames, i + 1, d, level, true);
+                              }
+                          }
+                          //正常情况
+                          else {
+                              getFieldData(fieldNames, i + 1, d, level, true);
+                          }
                       }
 
                   }
-                  structure.put(level-1,data.size(),isFoot);
+                  //判断是否为最底层的属性且设置为显示列表单个数据
+                  if(mPosition >=0&&i==fieldNames.length-2){
+                      structure.put(level - 1, 1, isFoot);
+                  }
+                  //正常情况
+                  else {
+                      structure.put(level - 1, data.size(), isFoot);
+                  }
               }
               break;
             }
@@ -173,13 +208,17 @@ public class ArrayColumn<T> extends Column<T> {
         return o !=null && (o instanceof List  || o.getClass().isArray());
     }
 
-
     /**
      * 获取当前层级
      * @return
      */
+    @Override
     public int getLevel(){
-        return  ColumnNode.getLevel(node,0)-1;
+        if(mLevel>0){
+            return mLevel;
+        }else {
+            return ColumnNode.getLevel(node, 0) - 1;
+        }
     }
 
     public ColumnNode getNode() {

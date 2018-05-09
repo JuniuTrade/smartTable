@@ -588,7 +588,12 @@ public class SmartTable<T> extends View implements OnTableChangeListener {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (tableData != null && getContext() != null) {
-            if (((Activity) getContext()).isFinishing()) {
+            //判断Context是否为Activity的Context
+            if (getContext() instanceof Activity) {
+                if (((Activity) getContext()).isFinishing()) {
+                    release();
+                }
+            } else {
                 release();
             }
         }
