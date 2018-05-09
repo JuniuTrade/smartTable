@@ -279,6 +279,11 @@ public class ArrayColumn<T> extends Column<T> {
         return structure.getCellSizes().get(position);
     }
 
-
-
+    /**
+     * 获取position值
+     * @return
+     */
+    public int getPosition() {
+        return mPosition;
+    }
 }

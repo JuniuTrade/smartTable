@@ -28,17 +28,20 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         smartTable = (SmartTable) findViewById(R.id.table);
+        smartTable.getConfig().setShowXSequence(false);
+        smartTable.getConfig().setShowYSequence(false);
         initDate();
         Column<String> teacherName = new Column<String>("老师名称", "name");
         teacherName.setFixed(true);
+        teacherName.setAutoMerge(true);
         ArrayColumn<String> studenName1 = new ArrayColumn<String>("学生名称1", "studentList.name");
-        studenName1.setSingleTarget(0,2);
+        studenName1.setSingleTarget(0, 2);
         ArrayColumn<String> studenName2 = new ArrayColumn<String>("学生名称2", "studentList.name");
-        studenName2.setSingleTarget(1,2);
+        studenName2.setSingleTarget(1, 2);
         ArrayColumn<String> studenName3 = new ArrayColumn<String>("学生名称3", "studentList.name");
-        studenName3.setSingleTarget(2,2);
+        studenName3.setSingleTarget(2, 2);
         ArrayColumn<String> studenName4 = new ArrayColumn<String>("学生名称4", "studentList.name");
-        studenName4.setSingleTarget(3,2);
+        studenName4.setSingleTarget(3, 2);
         TableData<Teacher> tableData = new TableData<Teacher>("", teacherList, teacherName, studenName1, studenName2, studenName3, studenName4);
         smartTable.setTableData(tableData);
     }
@@ -53,7 +56,7 @@ public class TestActivity extends AppCompatActivity {
                 studentList.add(student);
             }
             Teacher teacher = new Teacher();
-            teacher.setName("老师" + (i + 1));
+            teacher.setName("老师" + (i / 5 >= 1 ? "何" : "李"));
             teacher.setStudentList(studentList);
             teacherList.add(teacher);
         }

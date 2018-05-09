@@ -73,7 +73,8 @@ public class TableParser<T> {
      */
     private void addArrayNode(TableInfo tableInfo, List<Column> childColumns) {
         for (Column child : childColumns) {
-            if (child instanceof ArrayColumn) {
+            //判断Column是否为ArrayColumn，且是否启动显示单个position模式
+            if (child instanceof ArrayColumn&&(((ArrayColumn) child).getPosition())<0) {
                 ArrayColumn column = (ArrayColumn) child;
                 ColumnNode topNode = tableInfo.getTopNode();
                 if (topNode == null) {
