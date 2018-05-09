@@ -1,8 +1,6 @@
 package com.bin.david.form.data.column;
 
 
-import android.util.Log;
-
 import com.bin.david.form.data.ArrayStructure;
 import com.bin.david.form.data.TableInfo;
 import com.bin.david.form.data.format.IFormat;
