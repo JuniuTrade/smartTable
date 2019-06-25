@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/form/form.iml" filepath="$PROJECT_DIR$/form/form.iml" />
-      <module fileurl="file://$PROJECT_DIR$/smartTable.iml" filepath="$PROJECT_DIR$/smartTable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smartnb.iml" filepath="$PROJECT_DIR$/smartnb.iml" />
     </modules>
   </component>
 </project>

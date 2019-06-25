@@ -73,6 +73,7 @@ public class MultParseModeActivity extends AppCompatActivity implements View.OnC
         quickChartDialog = new QuickChartDialog();
         FontStyle.setDefaultTextSize(DensityUtils.sp2px(this,15)); //设置全局字体大小
         table = (SmartTable<UserInfo>) findViewById(R.id.table);
+        table.setMaxWidth(900);
         final List<UserInfo> testData = new ArrayList<>();
         Random random = new Random();
         List<TanBean> tanBeans = TanBean.initDatas();

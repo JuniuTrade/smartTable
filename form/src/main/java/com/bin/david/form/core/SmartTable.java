@@ -215,6 +215,24 @@ public class SmartTable<T> extends View implements OnTableChangeListener {
         return tableTitle;
     }
 
+    /**
+     * 单元格最大长度
+     *
+     * @param maxWidth
+     */
+    public void setMaxWidth(int maxWidth) {
+        defaultWidth = maxWidth;
+    }
+
+    /**
+     * 单元格最大长度
+     *
+     * @param maxHeight
+     */
+    public void setMaxHeight(int maxHeight) {
+        defaultHeight = maxHeight;
+    }
+
 
     /**
      * 通知更新
